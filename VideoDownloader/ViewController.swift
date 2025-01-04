@@ -39,30 +39,49 @@ class ViewController: NSViewController {
 
                 self.thumbnailImageView.image = image
 
-                // yt-dlp, ffmpeg, cookies.txtのパス取得
+                // yt-dlp, ffmpegのパス取得
                 guard let ytDlpPath = Bundle.main.path(forResource: "yt-dlp", ofType: nil) else {
                     self.showError("yt-dlpファイルが見つかりません。")
                     return
                 }
-                
-                let homeDir = FileManager.default.homeDirectoryForCurrentUser.path
                 
                 guard let ffmpegPath = Bundle.main.path(forResource: "ffmpeg", ofType: nil) else {
                     self.showError("ffmpegファイルが見つかりません。")
                     return
                 }
 
-                let cookiesPath = "\(homeDir)/Downloads/cookies.txt" // 適宜変更
-                
-                let downloadsPath = "\(homeDir)/Downloads/%(title)s_[%(uploader)s]_[%(id)s].%(ext)s"
+                // クッキーのパス（事前にエクスポートしたcookies.txt）
+                let homeDir = FileManager.default.homeDirectoryForCurrentUser.path
+                let cookiesPath = "\(homeDir)/Downloads/cookies.txt" // 必要に応じて変更
 
+                // ダウンロード先フォルダを指定
+                let downloadFolder = "\(homeDir)/Downloads/YoutubeDownloads"
+                
+                // フォルダが存在しない場合は作成
+                if !FileManager.default.fileExists(atPath: downloadFolder) {
+                    do {
+                        try FileManager.default.createDirectory(atPath: downloadFolder, withIntermediateDirectories: true, attributes: nil)
+                    } catch {
+                        self.showError("ダウンロードフォルダの作成に失敗しました。")
+                        return
+                    }
+                }
+
+                // 出力ファイルのパターンを設定
+                let downloadsPath = "\(downloadFolder)/%(title)s_[%(uploader)s]_[%(id)s].%(ext)s"
+
+                // extractor-argsの設定
+                let extractorArgs = "youtube:player_client=default,-ios"
+
+                // yt-dlpの引数を設定
                 let arguments = [
                     "-f", "bestvideo+bestaudio[ext=m4a]/best",
-                    "--merge-output-format", "mp4",
+                    url,
                     "--cookies", cookiesPath,
-                    "--ffmpeg-location", ffmpegPath,
+                    "--extractor-args", extractorArgs,
                     "-o", downloadsPath,
-                    url
+                    "--ffmpeg-location", ffmpegPath,
+                    "--verbose" // デバッグ用に追加
                 ]
 
                 self.progressBar.doubleValue = 0
@@ -145,11 +164,11 @@ class ViewController: NSViewController {
             let data = handle.availableData
             if data.isEmpty { return }
 
-            if let line = String(data: data, encoding: .utf8)?
+            if let output = String(data: data, encoding: .utf8)?
                 .trimmingCharacters(in: .whitespacesAndNewlines),
-               !line.isEmpty {
+               !output.isEmpty {
                 DispatchQueue.main.async {
-                    self.handleLine(line)
+                    self.handleLine(output)
                 }
             }
         }
@@ -159,7 +178,7 @@ class ViewController: NSViewController {
                 if task.terminationStatus == 0 {
                     self?.showInfo("ダウンロードが完了しました。")
                 } else {
-                    self?.showError("ダウンロードに失敗しました。")
+                    self?.showError("ダウンロードに失敗しました。ステータスコード: \(task.terminationStatus)")
                 }
             }
         }
@@ -173,6 +192,7 @@ class ViewController: NSViewController {
     }
 
     func handleLine(_ line: String) {
+        print("yt-dlp: \(line)") // デバッグ用にコンソールに出力
         let regex = try! NSRegularExpression(pattern: "(\\d+(?:\\.\\d+)?)%")
         if let match = regex.firstMatch(in: line, options: [], range: NSRange(location: 0, length: line.utf16.count)) {
             if let progressRange = Range(match.range(at: 1), in: line) {
