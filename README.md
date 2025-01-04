@@ -2,6 +2,7 @@
 
 # VideoDownloader
 Get video use yt-dlp and ffmpeg.
+support:macOS
 
 
 
@@ -12,4 +13,6 @@ Put "cookies.txt" file in your User Downloads directory.(chrome extension:"get c
 Copy Video URL.
 
 Click PASTE button.
+
+Video dwonloading start.
 
