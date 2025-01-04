@@ -7,7 +7,7 @@ Get video use yt-dlp and ffmpeg.
 
 # Usage
 
-Put cookie.txt in your User Downloads directory.(chrome extension:get gookie text)
+Put "cookies.txt" file in your User Downloads directory.(chrome extension:"get cookie text")
 
 Copy Video URL.
 
