@@ -8,7 +8,8 @@ support:macOS
 
 # Usage
 
-Put "cookies.txt" file in your User Downloads directory.(chrome extension:"get cookie text")
+Get cookies from browser(chrome).
+Please login YouTube on Chrome.
 
 Copy Video URL.
 
