@@ -77,7 +77,7 @@ class ViewController: NSViewController {
                 let arguments = [
                     "-f", "bestvideo+bestaudio[ext=m4a]/best",
                     url,
-                    "--cookies", cookiesPath,
+                    "--cookies-from-browser", "chrome",
                     "--extractor-args", extractorArgs,
                     "-o", downloadsPath,
                     "--ffmpeg-location", ffmpegPath,
