@@ -21,4 +21,5 @@ Copy Video URL.
 Click PASTE button.
 
 Video dwonloading start.
+Save file in the Downloads/YouTubeDownloads
 
