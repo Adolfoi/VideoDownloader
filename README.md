@@ -7,7 +7,9 @@ With just one click, you can paste a URL and instantly download videos from plat
 It leverages `yt-dlp` and `ffmpeg` under the hood to deliver high-quality downloads.
 
 ------------------------------------------------------------
-![VideoDownloader](https://github.com/user-attachments/assets/f789badd-8b8d-4a9e-8735-c0fb470b7f8b)
+
+<img src="https://github.com/user-attachments/assets/13a02b50-a913-4572-882c-31d687cf7d7c" alt="Image 2" width="400"/>
+
 
 ## 🚀 Features
 
@@ -76,7 +78,8 @@ This project is licensed under the [MIT License](LICENSE).
 内部では `yt-dlp` と `ffmpeg` を使用し、高品質なダウンロードを実現しています。
 
 ------------------------------------------------------------
-![VideoDownloader](https://github.com/user-attachments/assets/f789badd-8b8d-4a9e-8735-c0fb470b7f8b)
+
+<img src="https://github.com/user-attachments/assets/13a02b50-a913-4572-882c-31d687cf7d7c" alt="Image 2" width="400"/>
 
 ## 🚀 特徴
 
